@@ -73,8 +73,8 @@ def get_data(report: str) -> pd.DataFrame:
         'Assessment_Date':get_assessment_date(report),
         'KSBs':','.join([str(e) for e in get_KSBs(report)]),
         'KSB':[(get_KSBs(report)),],
-        'Portfolio_Comment':get_comment(report)[0],
-        'Project_comment':get_comment(report)[1]
+        'Portfolio_Comment':get_comment(report)['Portfolio_Comment'],
+        'Project_Comment':get_comment(report)['Project_Comment']
     }
     return pd.DataFrame(data, index=[0])
 
@@ -117,6 +117,11 @@ def database_transfer(data: pd.DataFrame, connection_string: str) -> None:
 
                 # commit the transaction
                 conn.commit()
+    except psycopg2.errors.UniqueViolation:
+            # This error occurs when there is a duplicate key.
+            print(f"A duplicate key error occurred with ULN: {data.loc[0,'ULN']}")
+            # skip this row and continue with the next row
+            conn.rollback()
     except (Exception, psycopg2.DatabaseError) as error:
         if conn:
             conn.rollback()
