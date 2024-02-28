@@ -28,7 +28,12 @@ def get_ULN(report: str) -> str:
 def get_assessment_date(report: str) -> datetime:
     match = re.search(r'Date of final \nassessment: (.*?) \nResults', report)
     date_string = match.group(1).strip() if match else None
-    return datetime.strptime(date_string, '%dth %B %Y') if date_string else None
+    if date_string.find('th')>0:
+        return datetime.strptime(date_string, '%dth %B %Y') if date_string else None
+    elif date_string.find('nd')>0:
+        datetime.strptime(date_string, '%dnd %B %Y') if date_string else None
+    else:
+        return datetime.strptime(date_string, '%dst %B %Y') if date_string else None
 
 def get_KSBs(report: str) -> list:
     parts = report.split('Relevant KSBs')
