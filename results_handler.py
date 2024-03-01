@@ -52,7 +52,7 @@ def get_comment(report: str) -> dict:
             professional_discussion = discussion_parts[0].strip()
             output['Portfolio_Comment']=professional_discussion
             if len(discussion_parts) >= 2:
-                discussion_parts = discussion_parts[1].split('PASS CRITERIA')
+                discussion_parts = discussion_parts[1].split('Relevant KSBs')
                 project_discussion = discussion_parts[0].strip()
                 output['Project_Comment']=project_discussion
     else:
@@ -64,7 +64,7 @@ def get_comment(report: str) -> dict:
             output['Project_Comment']=project_discussion
 
             if len(discussion_parts) >= 2:
-                discussion_parts = discussion_parts[1].split('PASS CRITERIA')
+                discussion_parts = discussion_parts[1].split('Relevant KSBs')
                 professional_discussion = discussion_parts[0].strip()
                 output['Portfolio_Comment']=professional_discussion
         
